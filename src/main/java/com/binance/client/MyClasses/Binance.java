@@ -18,21 +18,18 @@ public class Binance {
     public Telegram telegram;
     public void Analyzer(CandlestickInterval interval , String pair,SyncRequestClient syncRequestClient){
         Candlestick currentCandle= syncRequestClient.getCandlestick(pair, interval, null, null, 1).get(0);
-        System.out.println("\n"+currentCandle.getClose());
-        System.out.println(StartCandle.getClose());
-        System.out.println(Squoat);
-        System.out.println(Rquoat);
+
         if (StartCandle.getClose().floatValue()<Rquoat && currentCandle.getClose().floatValue()>Rquoat){
-            System.out.println("Пробито сопротивление");
-            telegram.SentMessage("517552587","Пробито сопротивление ");
-            telegram.SentMessage("561172746","Пробито сопротивление ");
+
+            telegram.SentMessage("517552587","Пробито сопротивление "+pair+"  "+interval+  " : "+Rquoat);
+            telegram.SentMessage("561172746","Пробито сопротивление "+pair+"  "+interval+  " : "+Rquoat);
             Lines();
 
         }
         if (StartCandle.getClose().floatValue()>Squoat && currentCandle.getClose().floatValue()<Squoat){
-            System.out.println("Пробита поддержка");
-            telegram.SentMessage("517552587","Пробита поддержка ");
-            telegram.SentMessage("561172746","Пробита поддержка ");
+
+            telegram.SentMessage("517552587","Пробита поддержка "+pair+"  "+interval+  " : "+ Squoat);
+            telegram.SentMessage("561172746","Пробита поддержка "+pair+"  "+interval+  " : "+ Squoat);
             Lines();
         }
         x++;
@@ -40,6 +37,7 @@ public class Binance {
             Resistance_Line(syncRequestClient,pair,interval);
             Support_Line(syncRequestClient,pair,interval);
             x=0;
+
         }
     }
     public  void  Main(CandlestickInterval interval1 , String pair1,SyncRequestClient syncRequestClient1){
@@ -70,7 +68,7 @@ public class Binance {
         ArrayList<Integer> nums = new ArrayList<>();
         CandleList=syncRequestClient.getCandlestick(pair,interval,null,null,100);
         StartCandle =CandleList.get(99);
-        System.out.println();
+
 
         for(int x = 97;x>0;x--){
             if (CandleList.get(x).getClose().floatValue()>CandleList.get(x+1).getClose().floatValue()&&CandleList.get(x).getClose().floatValue()>CandleList.get(x+2).getClose().floatValue()&&CandleList.get(x).getClose().floatValue()>CandleList.get(x+1).getClose().floatValue()&&/*CandleList.get(x).getClose().floatValue()>CandleList.get(x+3).getClose().floatValue()&&*/CandleList.get(x).getClose().floatValue()>CandleList.get(x-1).getClose().floatValue()&&CandleList.get(x).getClose().floatValue()>CandleList.get(x-2).getClose().floatValue()/*&&CandleList.get(x).getClose().floatValue()>CandleList.get(x-3).getClose().floatValue()*/){
@@ -84,7 +82,7 @@ public class Binance {
 
         }
         Rquoat =extremums.get(1)+ (extremums.get(1)-extremums.get(0))/(nums.get(1)-nums.get(0))*(100-nums.get(1));
-        System.out.println(extremums);
+
 
     }
     public void Support_Line(SyncRequestClient syncRequestClient, String pair, CandlestickInterval interval){
@@ -103,8 +101,7 @@ public class Binance {
 
         }
         Squoat =extremums.get(1)+ (extremums.get(1)-extremums.get(0))/(nums.get(1)-nums.get(0))*(100-nums.get(1));
-        System.out.println(Squoat);
-        System.out.println(extremums);
+
 
     }
 }
